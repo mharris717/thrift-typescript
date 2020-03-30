@@ -7,6 +7,7 @@ import {
     FunctionDefinition,
     SyntaxType,
     ThriftStatement,
+    FunctionType,
 } from '@creditkarma/thrift-parser'
 
 import { Resolver } from '../../resolver'
@@ -59,6 +60,11 @@ function statementUsesThrift(statement: ThriftStatement): boolean {
     }
 }
 
+function containerValueTypes(field: FunctionType): FieldType[] {
+    let a = field as any
+    return [a.valueType, a.keyType].filter(x => x)
+}
+
 function statementUsesInt64(statement: ThriftStatement): boolean {
     switch (statement.type) {
         case SyntaxType.ServiceDefinition:
@@ -80,7 +86,11 @@ function statementUsesInt64(statement: ThriftStatement): boolean {
         case SyntaxType.UnionDefinition:
         case SyntaxType.ExceptionDefinition:
             return statement.fields.some((field: FieldDefinition) => {
-                return field.fieldType.type === SyntaxType.I64Keyword
+                let types = [
+                    ...containerValueTypes(field.fieldType),
+                    field.fieldType,
+                ]
+                return types.some(cf => cf.type === SyntaxType.I64Keyword)
             })
 
         case SyntaxType.NamespaceDefinition:

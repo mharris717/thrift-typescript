@@ -230,7 +230,7 @@ export function thriftTypeForFieldType(
 export function typeNodeForFieldType(
     fieldType: FunctionType,
     state: IRenderState,
-    loose: boolean = false,
+    loose: boolean = true,
 ): ts.TypeNode {
     switch (fieldType.type) {
         case SyntaxType.Identifier:

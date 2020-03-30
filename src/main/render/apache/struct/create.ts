@@ -238,7 +238,7 @@ export function renderFieldDeclarations(
         [ts.createToken(ts.SyntaxKind.PublicKeyword)],
         ts.createIdentifier(field.name.value),
         renderOptional(field.requiredness),
-        typeNodeForFieldType(field.fieldType, state),
+        typeNodeForFieldType(field.fieldType, state, true),
         defaultValue,
     )
 }
